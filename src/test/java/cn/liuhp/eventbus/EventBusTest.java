@@ -52,4 +52,10 @@ public class EventBusTest extends BaseTest {
         AsyncEventBusPublisher.postEvent(guavaEvent);
         log.info("完成发布");
     }
+
+    @Test
+    public void testDeadEvent() {
+        Object deadEvent = new Object();
+        EventBusPublisher.postEvent(deadEvent);
+    }
 }
