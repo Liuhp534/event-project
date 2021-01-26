@@ -9,6 +9,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 /**
  * @description:
  * @author: liuhp534
@@ -20,7 +23,7 @@ public class SpringEventTest extends BaseTest {
     @Autowired
     private SpringPublisher springPublisher;
 
-
+    private Executor executor = Executors.newFixedThreadPool(10);
     /**
      *  发布ApplicationEvent体系的自定义事件
      */
@@ -61,5 +64,18 @@ public class SpringEventTest extends BaseTest {
             }
         };
         springPublisher.pushEvent(event);
+    }
+
+
+    @Test
+    public void testMultiThreadPostEvent() throws InterruptedException {
+        for (int i = 0; i < 10; i++) {
+            executor.execute(() -> {
+                SpringCustomEvent event = new SpringCustomEvent(this);
+                springPublisher.pushEvent(event);
+            });
+        }
+        Thread.sleep(Integer.MAX_VALUE);
+        log.info("完成发布");
     }
 }

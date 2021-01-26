@@ -26,7 +26,7 @@ public class CustomMulticasterConfiguration {
             simple = new SimpleApplicationEventMulticaster();
         }
         simple.setErrorHandler(this.customErrorHandler());
-        simple.setTaskExecutor(Executors.newFixedThreadPool(5));
+        //simple.setTaskExecutor(Executors.newFixedThreadPool(5));
         return simple;
     }
 

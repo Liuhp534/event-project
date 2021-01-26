@@ -18,7 +18,13 @@ public class SpringCustomListener implements ApplicationListener<SpringCustomEve
 
     @Override
     public void onApplicationEvent(SpringCustomEvent event) {
-        log.info("-----------收到事件={}", event.getClass().getSimpleName());
+        //log.info("-----------收到事件={}", event.getClass().getSimpleName());
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.info("-----------收到事件完成={}, threadName={}", event.getClass().getSimpleName(), Thread.currentThread().getName());
     }
 
 }
