@@ -6,6 +6,9 @@ import cn.liuhp.eventbus.event.GuavaSubEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 /**
  * @description:
  * @author: liuhp534
@@ -15,10 +18,24 @@ import org.junit.Test;
 public class EventBusTest extends BaseTest {
 
 
+    private Executor executor = Executors.newFixedThreadPool(10);
+
     @Test
     public void testPostEvent() {
         GuavaEvent guavaEvent = new GuavaEvent();
         EventBusPublisher.postEvent(guavaEvent);
+        log.info("完成发布");
+    }
+
+    @Test
+    public void testMultiThreadPostEvent() throws InterruptedException {
+        for (int i = 0; i < 10; i++) {
+            executor.execute(() -> {
+                GuavaEvent guavaEvent = new GuavaEvent();
+                EventBusPublisher.postEvent(guavaEvent);
+            });
+        }
+        Thread.sleep(Integer.MAX_VALUE);
         log.info("完成发布");
     }
 
